@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIET - Modern Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">PIET</div>
+        </div>
+        <nav class="nav-menu">
+            <div class="nav-item active" onclick="showPage('dashboard')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </a>
+            </div>
+            <div class="nav-item" onclick="showPage('news')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-newspaper"></i>
+                    News & Updates
+                </a>
+            </div>
+            <div class="nav-item" onclick="showPage('files')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    File Upload
+                </a>
+            </div>
+            <div class="nav-item" onclick="showPage('profile')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-user-circle"></i>
+                    Profile
+                </a>
+            </div>
+            <div class="nav-item" onclick="showPage('forms')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i>
+                    Forms
+                </a>
+            </div>
+            <div class="nav-item" onclick="showPage('analytics')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    Analytics
+                </a>
+            </div>
+            <div class="nav-item" onclick="showPage('settings')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="topbar">
+            <button class="toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search anything...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <div class="topbar-actions">
+                <button class="action-btn">
+                    <i class="fas fa-bell"></i>
+                    <div class="notification-badge"></div>
+                </button>
+                <button class="action-btn">
+                    <i class="fas fa-user"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="dashboard" class="page-content active">
+            <div class="stats-grid">
+                <div class="stat-card slide-up">
+                    <div class="stat-icon" style="background: var(--primary);">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value">2,845</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card slide-up" style="animation-delay: 0.1s;">
+                    <div class="stat-icon" style="background: var(--success);">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-value">$45,210</div>
+                    <div class="stat-label">Revenue</div>
+                </div>
+                <div class="stat-card slide-up" style="animation-delay: 0.2s;">
+                    <div class="stat-icon" style="background: var(--warning);">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-value">1,423</div>
+                    <div class="stat-label">Orders</div>
+                </div>
+                <div class="stat-card slide-up" style="animation-delay: 0.3s;">
+                    <div class="stat-icon" style="background: var(--danger);">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-value">98.5%</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="widget fade-in">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Recent Activity</h3>
+                        <div class="widget-actions">
+                            <button class="widget-btn"><i class="fas fa-sync-alt"></i></button>
+                            <button class="widget-btn"><i class="fas fa-ellipsis-v"></i></button>
+                        </div>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: var(--primary);">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">New user registered</div>
+                                <div class="activity-time">2 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: var(--success);">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Order completed</div>
+                                <div class="activity-time">15 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: var(--warning);">
+                                <i class="fas fa-file-upload"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">File uploaded successfully</div>
+                                <div class="activity-time">1 hour ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: var(--secondary);">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">System notification</div>
+                                <div class="activity-time">3 hours ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget fade-in" style="animation-delay: 0.2s;">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Quick Actions</h3>
+                    </div>
+                    <div class="d-grid gap-3">
+                        <button class="btn btn-primary" onclick="showPage('files')">
+                            <i class="fas fa-upload"></i>
+                            Upload File
+                        </button>
+                        <button class="btn btn-outline" onclick="showPage('forms')">
+                            <i class="fas fa-plus"></i>
+                            Create Form
+                        </button>
+                        <button class="btn btn-outline" onclick="showPage('profile')">
+                            <i class="fas fa-user-edit"></i>
+                            Edit Profile
+                        </button>
+                        <button class="btn btn-outline" onclick="showPage('settings')">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="news" class="page-content">
+            <div class="widget">
+                <div class="widget-header">
+                    <h2 class="widget-title">Latest News & Updates</h2>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Add News
+                    </button>
+                </div>
+                <div class="news-list">
+                    <div class="news-item">
+                        <div class="news-title">System Maintenance Scheduled</div>
+                        <div class="news-meta">
+                            <span><i class="fas fa-calendar"></i> Today, 2:00 PM</span>
+                            <span><i class="fas fa-user"></i> Admin Team</span>
+                            <span class="badge bg-warning">Important</span>
+                        </div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">New Feature Release: Advanced Analytics Dashboard</div>
+                        <div class="news-meta">
+                            <span><i class="fas fa-calendar"></i> Yesterday, 9:30 AM</span>
+                            <span><i class="fas fa-user"></i> Development Team</span>
+                            <span class="badge bg-success">New</span>
+                        </div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">Security Update Available - Version 2.1.0</div>
+                        <div class="news-meta">
+                            <span><i class="fas fa-calendar"></i> 2 days ago</span>
+                            <span><i class="fas fa-user"></i> Security Team</span>
+                            <span class="badge bg-danger">Critical</span>
+                        </div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">Welcome to Our Enhanced PIET Dashboard</div>
+                        <div class="news-meta">
+                            <span><i class="fas fa-calendar"></i> 3 days ago</span>
+                            <span><i class="fas fa-user"></i> Product Team</span>
+                            <span class="badge bg-primary">Announcement</span>
+                        </div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">Performance Improvements and Bug Fixes</div>
+                        <div class="news-meta">
+                            <span><i class="fas fa-calendar"></i> 1 week ago</span>
+                            <span><i class="fas fa-user"></i> Development Team</span>
+                            <span class="badge bg-info">Update</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="files" class="page-content">
+            <div class="form-container">
+                <div class="widget-header">
+                    <h2 class="widget-title">File Upload Center</h2>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline">
+                            <i class="fas fa-folder"></i>
+                            Browse Files
+                        </button>
+                    </div>
+                </div>
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h4>Drag & Drop Files Here</h4>
+                    <p style="color: var(--text-secondary); margin: 1rem 0 0 0;">or click to browse your computer</p>
+                    <input type="file" id="fileInput" multiple style="display: none;">
+                </div>
+
+                <div class="mt-4">
+                    <div class="widget-header">
+                        <h5 class="widget-title">Recent Uploads</h5>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-eye"></i>
+                            View All
+                        </button>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="widget" style="padding: 1.5rem;">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="activity-icon me-3"
+                                        style="background: var(--danger); width: 40px; height: 40px;">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600;">report_2024.pdf</div>
+                                        <small style="color: var(--text-secondary);">2.4 MB • 2 hours ago</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="widget" style="padding: 1.5rem;">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="activity-icon me-3"
+                                        style="background: var(--success); width: 40px; height: 40px;">
+                                        <i class="fas fa-file-image"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600;">screenshot.png</div>
+                                        <small style="color: var(--text-secondary);">1.8 MB • 1 day ago</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="widget" style="padding: 1.5rem;">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="activity-icon me-3"
+                                        style="background: var(--primary); width: 40px; height: 40px;">
+                                        <i class="fas fa-file-word"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600;">document.docx</div>
+                                        <small style="color: var(--text-secondary);">856 KB • 3 days ago</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="profile" class="page-content">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-name">John Doe</div>
+                        <div class="profile-role">System Administrator</div>
+                        <div class="d-flex gap-2 justify-content-center mb-3">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-edit"></i>
+                                Edit Profile
+                            </button>
+                            <button class="btn btn-outline">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <div class="profile-stat-value">142</div>
+                                <div class="profile-stat-label">Projects</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-value">98</div>
+                                <div class="profile-stat-label">Tasks</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-value">24</div>
+                                <div class="profile-stat-label">Teams</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-container">
+                        <div class="widget-header">
+                            <h3 class="widget-title">Profile Information</h3>
+                            <button class="btn btn-outline">
+                                <i class="fas fa-save"></i>
+                                Save Changes
+                            </button>
+                        </div>
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-control" value="John"
+                                            placeholder="Enter first name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" value="Doe"
+                                            placeholder="Enter last name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" value="john.doe@example.com"
+                                            placeholder="Enter email">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" value="+1 (555) 123-4567"
+                                            placeholder="Enter phone">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Job Title</label>
+                                <input type="text" class="form-control" value="System Administrator"
+                                    placeholder="Enter job title">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Bio</label>
+                                <textarea class="form-control" rows="4"
+                                    placeholder="Tell us about yourself...">Experienced administrator with a passion for modern technology and user experience design. Specialized in system optimization and team management.</textarea>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Location</label>
+                                        <input type="text" class="form-control" value="New York, USA"
+                                            placeholder="Enter location">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Website</label>
+                                        <input type="url" class="form-control" placeholder="https://yourwebsite.com">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="forms" class="page-content">
+            <div class="form-container">
+                <div class="widget-header">
+                    <h2 class="widget-title">Contact Form</h2>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline">
+                            <i class="fas fa-eye"></i>
+                            Preview
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            New Form
+                        </button>
+                    </div>
+                </div>
+                <form id="contactForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" placeholder="Enter your full name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" placeholder="Enter your phone">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Company</label>
+                                <input type="text" class="form-control" placeholder="Enter company name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Subject *</label>
+                        <select class="form-control" required>
+                            <option value="">Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="billing">Billing Question</option>
+                            <option value="feedback">Feedback & Suggestions</option>
+                            <option value="partnership">Partnership</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Priority Level</label>
+                        <select class="form-control">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                            <option value="urgent">Urgent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Message *</label>
+                        <textarea class="form-control" rows="5" placeholder="Enter your message here..."
+                            required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="newsletter">
+                            <label class="form-check-label" for="newsletter">
+                                Subscribe to our newsletter for updates
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                I agree to the Terms of Service and Privacy Policy *
+                            </label>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                        <button type="reset" class="btn btn-outline">
+                            <i class="fas fa-undo"></i>
+                            Reset Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="widget mt-4">
+                <div class="widget-header">
+                    <h3 class="widget-title">Form Submissions</h3>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-filter"></i>
+                            Filter
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Subject</th>
+                                <th>Priority</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Alice Johnson</strong></td>
+                                <td>alice@example.com</td>
+                                <td>General Inquiry</td>
+                                <td><span class="badge bg-warning">Medium</span></td>
+                                <td>Today, 2:30 PM</td>
+                                <td><span class="badge bg-warning">Pending</span></td>
+                                <td>
+                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-primary" style="padding: 0.25rem 0.5rem;">
+                                        <i class="fas fa-reply"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bob Smith</strong></td>
+                                <td>bob@example.com</td>
+                                <td>Technical Support</td>
+                                <td><span class="badge bg-danger">High</span></td>
+                                <td>Yesterday, 4:15 PM</td>
+                                <td><span class="badge bg-success">Resolved</span></td>
+                                <td>
+                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-primary" style="padding: 0.25rem 0.5rem;">
+                                        <i class="fas fa-reply"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Carol Williams</strong></td>
+                                <td>carol@example.com</td>
+                                <td>Billing Question</td>
+                                <td><span class="badge bg-primary">Low</span></td>
+                                <td>2 days ago</td>
+                                <td><span class="badge bg-info">In Progress</span></td>
+                                <td>
+                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-primary" style="padding: 0.25rem 0.5rem;">
+                                        <i class="fas fa-reply"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>David Brown</strong></td>
+                                <td>david@example.com</td>
+                                <td>Partnership</td>
+                                <td><span class="badge bg-success">Medium</span></td>
+                                <td>3 days ago</td>
+                                <td><span class="badge bg-success">Resolved</span></td>
+                                <td>
+                                    <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-primary" style="padding: 0.25rem 0.5rem;">
+                                        <i class="fas fa-reply"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="analytics" class="page-content">
+            <div class="stats-grid mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--primary);">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="stat-value">45,210</div>
+                    <div class="stat-label">Page Views</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--success);">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value">12,845</div>
+                    <div class="stat-label">Unique Visitors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--warning);">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-value">2m 45s</div>
+                    <div class="stat-label">Avg. Session</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--secondary);">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="stat-value">68.2%</div>
+                    <div class="stat-label">Bounce Rate</div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-8">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3 class="widget-title">Traffic Analytics</h3>
+                            <select class="form-control" style="width: auto;">
+                                <option>Last 7 days</option>
+                                <option>Last 30 days</option>
+                                <option>Last 90 days</option>
+                                <option>Last 12 months</option>
+                            </select>
+                        </div>
+                        <div class="chart-container"
+                            style="height: 300px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); background: linear-gradient(135deg, var(--dark-bg) 0%, rgba(102, 126, 234, 0.05) 100%); border-radius: 12px;">
+                            <div class="text-center">
+                                <i class="fas fa-chart-area"
+                                    style="font-size: 5rem; opacity: 0.3; margin-bottom: 1rem;"></i>
+                                <h5>Analytics Chart Visualization</h5>
+                                <p>Interactive charts will be displayed here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3 class="widget-title">Top Pages</h3>
+                            <button class="btn btn-outline">
+                                <i class="fas fa-external-link-alt"></i>
+                            </button>
+                        </div>
+                        <div class="page-list">
+                            <div class="d-flex justify-content-between align-items-center mb-3 p-2 rounded"
+                                style="background: rgba(102, 126, 234, 0.05);">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-tachometer-alt me-2" style="color: var(--text-secondary);"></i>
+                                    <span>/dashboard</span>
+                                </div>
+                                <span class="badge" style="background: var(--primary);">1,234</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3 p-2 rounded"
+                                style="background: rgba(102, 126, 234, 0.05);">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user me-2" style="color: var(--text-secondary);"></i>
+                                    <span>/profile</span>
+                                </div>
+                                <span class="badge" style="background: var(--success);">987</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3 p-2 rounded"
+                                style="background: rgba(102, 126, 234, 0.05);">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-clipboard-list me-2" style="color: var(--text-secondary);"></i>
+                                    <span>/forms</span>
+                                </div>
+                                <span class="badge" style="background: var(--warning);">654</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3 p-2 rounded"
+                                style="background: rgba(102, 126, 234, 0.05);">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-chart-line me-2" style="color: var(--text-secondary);"></i>
+                                    <span>/analytics</span>
+                                </div>
+                                <span class="badge" style="background: var(--secondary);">432</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center p-2 rounded"
+                                style="background: rgba(102, 126, 234, 0.05);">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-cog me-2" style="color: var(--text-secondary);"></i>
+                                    <span>/settings</span>
+                                </div>
+                                <span class="badge" style="background: var(--danger);">321</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget mt-4">
+                        <div class="widget-header">
+                            <h3 class="widget-title">Device Stats</h3>
+                        </div>
+                        <div class="device-stats">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-desktop me-2" style="color: var(--primary);"></i>
+                                    <span>Desktop</span>
+                                </div>
+                                <span>65.2%</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-mobile-alt me-2" style="color: var(--success);"></i>
+                                    <span>Mobile</span>
+                                </div>
+                                <span>28.4%</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-tablet-alt me-2" style="color: var(--warning);"></i>
+                                    <span>Tablet</span>
+                                </div>
+                                <span>6.4%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="settings" class="page-content">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="form-container">
+                        <div class="widget-header">
+                            <h3 class="widget-title">Account Security</h3>
+                            <button class="btn btn-outline">
+                                <i class="fas fa-shield-alt"></i>
+                                Security Audit
+                            </button>
+                        </div>
+                        <form>
+                            <div class="form-group">
+                                <label class="form-label">Current Username</label>
+                                <input type="text" class="form-control" value="johndoe" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Current Password</label>
+                                <input type="password" class="form-control" placeholder="Enter current password">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">New Password</label>
+                                <input type="password" class="form-control" placeholder="Enter new password">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" placeholder="Confirm new password">
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="twoFactor">
+                                    <label class="form-check-label" for="twoFactor">
+                                        Enable Two-Factor Authentication
+                                    </label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-key"></i>
+                                Update Password
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-container">
+                        <div class="widget-header">
+                            <h3 class="widget-title">Preferences</h3>
+                            <button class="btn btn-outline">
+                                <i class="fas fa-sync-alt"></i>
+                                Reset to Default
+                            </button>
+                        </div>
+                        <div class="preferences-list">
+                            <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded"
+                                style="background: rgba(102, 126, 234, 0.05);">
+                                <div>
+                                    <div style="font-weight: 600;">Email Notifications</div>
+                                    <small style="color: var(--text-secondary);">Receive updates via email</small>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded"
+                                style="background: rgba(102, 126, 234, 0.05);">
+                                <div>
+                                    <div style="font-weight: 600;">Push Notifications</div>
+                                    <small style="color: var(--text-secondary);">Browser push notifications</small>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="pushNotifications">
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded"
+                                style="background: rgba(102, 126, 234, 0.05);">
+                                <div>
+                                    <div style="font-weight: 600;">Dark Mode</div>
+                                    <small style="color: var(--text-secondary);">Use dark theme</small>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="darkMode" checked>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded"
+                                style="background: rgba(102, 126, 234, 0.05);">
+                                <div>
+                                    <div style="font-weight: 600;">Auto-save</div>
+                                    <small style="color: var(--text-secondary);">Automatically save changes</small>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="autoSave" checked>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Language</label>
+                                    <select class="form-control">
+                                        <option>English (US)</option>
+                                        <option>English (UK)</option>
+                                        <option>Spanish</option>
+                                        <option>French</option>
+                                        <option>German</option>
+                                        <option>Italian</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Timezone</label>
+                                    <select class="form-control">
+                                        <option>UTC-5 (Eastern Time)</option>
+                                        <option>UTC-6 (Central Time)</option>
+                                        <option>UTC-7 (Mountain Time)</option>
+                                        <option>UTC-8 (Pacific Time)</option>
+                                        <option>UTC+0 (Greenwich Mean Time)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Save Preferences
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-2">
+                <div class="col-md-6">
+                    <div class="form-container">
+                        <div class="widget-header">
+                            <h3 class="widget-title">Privacy Settings</h3>
+                            <button class="btn btn-outline">
+                                <i class="fas fa-eye"></i>
+                                Privacy Policy
+                            </button>
+                        </div>
+                        <div class="privacy-options">
+                            <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded"
+                                style="background: rgba(102, 126, 234, 0.05);">
+                                <div>
+                                    <div style="font-weight: 600;">Profile Visibility</div>
+                                    <small style="color: var(--text-secondary);">Make profile public</small>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="profilePublic">
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded"
+                                style="background: rgba(102, 126, 234, 0.05);">
+                                <div>
+                                    <div style="font-weight: 600;">Data Analytics</div>
+                                    <small style="color: var(--text-secondary);">Allow usage analytics</small>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="analytics" checked>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded"
+                                style="background: rgba(102, 126, 234, 0.05);">
+                                <div>
+                                    <div style="font-weight: 600;">Marketing Emails</div>
+                                    <small style="color: var(--text-secondary);">Receive promotional content</small>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="marketing">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-container">
+                        <div class="widget-header">
+                            <h3 class="widget-title">System Information</h3>
+                        </div>
+                        <div class="system-info">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Version</span>
+                                <span class="badge" style="background: var(--primary);">2.1.0</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Last Updated</span>
+                                <span style="color: var(--text-secondary);">2 days ago</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Storage Used</span>
+                                <span style="color: var(--text-secondary);">2.4 GB / 10 GB</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Active Sessions</span>
+                                <span style="color: var(--text-secondary);">3 devices</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <span>Server Status</span>
+                                <span class="badge bg-success">Online</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-download"></i>
+                                    Check Updates
+                                </button>
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-info-circle"></i>
+                                    System Logs
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-container mt-4">
+                <div class="widget-header">
+                    <h3 class="widget-title" style="color: #ff6b6b;">Danger Zone</h3>
+                    <i class="fas fa-exclamation-triangle" style="color: #ff6b6b;"></i>
+                </div>
+                <div class="alert alert-danger" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <div>
+                            <strong>Warning:</strong> These actions are irreversible and cannot be undone. Please
+                            proceed with caution.
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="p-3 rounded"
+                            style="background: rgba(255, 107, 107, 0.05); border: 1px solid rgba(255, 107, 107, 0.2);">
+                            <h6 style="color: #ff6b6b;">Export Data</h6>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;">Download all your data</p>
+                            <button class="btn btn-outline" style="border-color: #ff6b6b; color: #ff6b6b;">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 rounded"
+                            style="background: rgba(255, 107, 107, 0.05); border: 1px solid rgba(255, 107, 107, 0.2);">
+                            <h6 style="color: #ff6b6b;">Reset Settings</h6>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;">Reset all preferences</p>
+                            <button class="btn btn-outline" style="border-color: #ff6b6b; color: #ff6b6b;">
+                                <i class="fas fa-undo"></i>
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 rounded"
+                            style="background: rgba(255, 107, 107, 0.05); border: 1px solid rgba(255, 107, 107, 0.2);">
+                            <h6 style="color: #ff6b6b;">Delete Account</h6>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;">Permanently delete account</p>
+                            <button class="btn" style="background: #ff6b6b; color: white; border: none;">
+                                <i class="fas fa-trash"></i>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
