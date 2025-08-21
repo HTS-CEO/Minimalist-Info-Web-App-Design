@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIET - Modern Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --dark-bg: #1a1d29;
+            --card-bg: #252837;
+            --text-light: #94a3b8;
+            --border-color: #334155;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #0f172a 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: rgba(37, 40, 55, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+        
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-menu {
+            padding: 1rem 0;
+        }
+        
+        .nav-item {
+            margin: 0.5rem 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1rem;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-item:hover .nav-link, .nav-item.active .nav-link {
+            color: white;
+        }
+        
+        .nav-link i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+        
+        .main-content.expanded {
+            margin-left: 0;
+        }
+        
+        .topbar {
+            background: rgba(37, 40, 55, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+        
+        .toggle-sidebar:hover {
+            background: var(--border-color);
+        }
+        
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 2rem;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+        
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .notification-btn, .profile-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .notification-btn:hover, .profile-btn:hover {
+            color: white;
+            background: var(--border-color);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: 0.25rem;
+            right: 0.25rem;
+            width: 8px;
+            height: 8px;
+            background: var(--danger-color);
+            border-radius: 50%;
+        }
+        
+        .page-content {
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .page-content.active {
+            display: block;
+        }
+        
+        .page-content:not(.active) {
+            display: none;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(37, 40, 55, 0.8) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary-color);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .widget {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .widget:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        }
+        
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .widget-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .widget-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .widget-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .widget-btn:hover {
+            color: white;
+            background: var(--border-color);
+        }
+        
+        .news-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        .news-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+        
+        .news-meta {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+        
+        .form-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--dark-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .upload-area.dragover {
+            border-color: var(--accent-color);
+            background: rgba(240, 147, 251, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+        
+        .profile-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-role {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .profile-stat {
+            text-align: center;
+            padding: 1rem;
+            background: var(--dark-bg);
+            border-radius: 8px;
+        }
+        
+        .profile-stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .profile-stat-label {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .activity-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .activity-time {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-box {
+                display: none;
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.6s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">PIET</div>
+        </div>
+        <nav class="nav-menu">
+            <div class="nav-item active" onclick="showPage('dashboard')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </a>
+            </div>
+            <div class="nav-item" onclick="showPage('news')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-newspaper"></i>
+                    News & Updates
+                </a>
+            </div>
+            <div class="nav-item" onclick="showPage('files')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    File Upload
+                </a>
+            </div>
+            <div class="nav-item" onclick="showPage('profile')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-user-circle"></i>
+                    Profile
+                </a>
+            </div>
+            <div class="nav-item" onclick="showPage('forms')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i>
+                    Forms
+                </a>
+            </div>
+            <div class="nav-item" onclick="showPage('analytics')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    Analytics
+                </a>
+            </div>
+            <div class="nav-item" onclick="showPage('settings')">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="topbar">
+            <button class="toggle-sidebar" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search...">
+            </div>
+            <div class="topbar-actions">
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <div class="notification-badge"></div>
+                </button>
+                <button class="profile-btn">
+                    <i class="fas fa-user"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="dashboard" class="page-content active">
+            <div class="stats-grid">
+                <div class="stat-card slide-up">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #667eea, #764ba2);">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value">2,845</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card slide-up" style="animation-delay: 0.1s;">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #10b981, #059669);">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-value">$45,210</div>
+                    <div class="stat-label">Revenue</div>
+                </div>
+                <div class="stat-card slide-up" style="animation-delay: 0.2s;">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #f59e0b, #d97706);">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-value">1,423</div>
+                    <div class="stat-label">Orders</div>
+                </div>
+                <div class="stat-card slide-up" style="animation-delay: 0.3s;">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #ef4444, #dc2626);">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-value">98.5%</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="widget fade-in">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Recent Activity</h3>
+                        <div class="widget-actions">
+                            <button class="widget-btn"><i class="fas fa-refresh"></i></button>
+                            <button class="widget-btn"><i class="fas fa-ellipsis-v"></i></button>
+                        </div>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: linear-gradient(45deg, #667eea, #764ba2);">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">New user registration</div>
+                                <div class="activity-time">2 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: linear-gradient(45deg, #10b981, #059669);">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Order completed</div>
+                                <div class="activity-time">15 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: linear-gradient(45deg, #f59e0b, #d97706);">
+                                <i class="fas fa-file-upload"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">File uploaded</div>
+                                <div class="activity-time">1 hour ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: linear-gradient(45deg, #8b5cf6, #7c3aed);">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">System notification</div>
+                                <div class="activity-time">3 hours ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget fade-in" style="animation-delay: 0.2s;">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Quick Actions</h3>
+                    </div>
+                    <div class="d-grid gap-3">
+                        <button class="btn btn-primary" onclick="showPage('files')">
+                            <i class="fas fa-upload"></i>
+                            Upload File
+                        </button>
+                        <button class="btn btn-outline" onclick="showPage('forms')">
+                            <i class="fas fa-plus"></i>
+                            Create Form
+                        </button>
+                        <button class="btn btn-outline" onclick="showPage('profile')">
+                            <i class="fas fa-user-edit"></i>
+                            Edit Profile
+                        </button>
+                        <button class="btn btn-outline" onclick="showPage('settings')">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="news" class="page-content">
+            <div class="widget">
+                <div class="widget-header">
+                    <h2 class="widget-title">Latest News & Updates</h2>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Add News
+                    </button>
+                </div>
+                <div class="news-list">
+                    <div class="news-item">
+                        <div class="news-title">System Maintenance Scheduled</div>
+                        <div class="news-meta">
+                            <i class="fas fa-calendar"></i> Today, 2:00 PM
+                            <i class="fas fa-user ms-3"></i> Admin Team
+                        </div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">New Feature Release: Advanced Analytics</div>
+                        <div class="news-meta">
+                            <i class="fas fa-calendar"></i> Yesterday, 9:30 AM
+                            <i class="fas fa-user ms-3"></i> Development Team
+                        </div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">Security Update Available</div>
+                        <div class="news-meta">
+                            <i class="fas fa-calendar"></i> 2 days ago
+                            <i class="fas fa-user ms-3"></i> Security Team
+                        </div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">Welcome to Our New Dashboard</div>
+                        <div class="news-meta">
+                            <i class="fas fa-calendar"></i> 3 days ago
+                            <i class="fas fa-user ms-3"></i> Product Team
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="files" class="page-content">
+            <div class="form-container">
+                <h2 class="mb-4">File Upload</h2>
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h4>Drag & Drop Files Here</h4>
+                    <p class="text-muted">or click to browse</p>
+                    <input type="file" id="fileInput" multiple style="display: none;">
+                </div>
+                <div class="mt-4">
+                    <h5>Recent Uploads</h5>
+                    <div class="list-group">
+                        <div class="list-group-item d-flex justify-content-between align-items-center" style="background: var(--card-bg); border: 1px solid var(--border-color); color: white;">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-file-pdf text-danger me-3"></i>
+                                <span>report_2024.pdf</span>
+                            </div>
+                            <small class="text-muted">2.4 MB</small>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center" style="background: var(--card-bg); border: 1px solid var(--border-color); color: white;">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-file-image text-success me-3"></i>
+                                <span>screenshot.png</span>
+                            </div>
+                            <small class="text-muted">1.8 MB</small>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center" style="background: var(--card-bg); border: 1px solid var(--border-color); color: white;">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-file-word text-primary me-3"></i>
+                                <span>document.docx</span>
+                            </div>
+                            <small class="text-muted">856 KB</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="profile" class="page-content">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-name">John Doe</div>
+                        <div class="profile-role">Administrator</div>
+                        <button class="btn btn-primary mb-3">Edit Profile</button>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <div class="profile-stat-value">142</div>
+                                <div class="profile-stat-label">Projects</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-value">98</div>
+                                <div class="profile-stat-label">Tasks</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-value">24</div>
+                                <div class="profile-stat-label">Teams</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-container">
+                        <h3>Profile Information</h3>
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-control" value="John">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" value="Doe">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" value="john.doe@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-control" value="+1 (555) 123-4567">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Bio</label>
+                                <textarea class="form-control" rows="4">Experienced administrator with a passion for modern technology and user experience design.</textarea>
+                            </div>
+                            <div class="d-flex gap-3">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                <button type="button" class="btn btn-outline">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="forms" class="page-content">
+            <div class="form-container">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Contact Form</h2>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        New Form
+                    </button>
+                </div>
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" placeholder="Enter your full name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" placeholder="Enter your phone">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Company</label>
+                                <input type="text" class="form-control" placeholder="Enter company name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Subject *</label>
+                        <select class="form-control" required>
+                            <option value="">Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="billing">Billing Question</option>
+                            <option value="feedback">Feedback</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Message *</label>
+                        <textarea class="form-control" rows="5" placeholder="Enter your message" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="newsletter">
+                            <label class="form-check-label" for="newsletter">
+                                Subscribe to our newsletter
+                            </label>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                        <button type="reset" class="btn btn-outline">
+                            <i class="fas fa-undo"></i>
+                            Reset Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="widget mt-4">
+                <div class="widget-header">
+                    <h3 class="widget-title">Form Submissions</h3>
+                    <div class="widget-actions">
+                        <button class="widget-btn"><i class="fas fa-download"></i></button>
+                        <button class="widget-btn"><i class="fas fa-filter"></i></button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table" style="color: white;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td>Alice Johnson</td>
+                                <td>alice@example.com</td>
+                                <td>General Inquiry</td>
+                                <td>Today</td>
+                                <td><span class="badge bg-warning">Pending</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary me-1"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline"><i class="fas fa-reply"></i></button>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td>Bob Smith</td>
+                                <td>bob@example.com</td>
+                                <td>Technical Support</td>
+                                <td>Yesterday</td>
+                                <td><span class="badge bg-success">Resolved</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary me-1"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline"><i class="fas fa-reply"></i></button>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td>Carol Williams</td>
+                                <td>carol@example.com</td>
+                                <td>Billing Question</td>
+                                <td>2 days ago</td>
+                                <td><span class="badge bg-info">In Progress</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary me-1"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline"><i class="fas fa-reply"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="analytics" class="page-content">
+            <div class="stats-grid mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #667eea, #764ba2);">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="stat-value">45,210</div>
+                    <div class="stat-label">Page Views</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #10b981, #059669);">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value">12,845</div>
+                    <div class="stat-label">Unique Visitors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #f59e0b, #d97706);">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-value">2m 45s</div>
+                    <div class="stat-label">Avg. Session</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(45deg, #8b5cf6, #7c3aed);">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="stat-value">68.2%</div>
+                    <div class="stat-label">Bounce Rate</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3 class="widget-title">Traffic Analytics</h3>
+                            <div class="widget-actions">
+                                <select class="form-control" style="width: auto; display: inline-block;">
+                                    <option>Last 7 days</option>
+                                    <option>Last 30 days</option>
+                                    <option>Last 90 days</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-container" style="height: 300px; display: flex; align-items: center; justify-content: center; color: var(--text-light);">
+                            <i class="fas fa-chart-area" style="font-size: 4rem; opacity: 0.3;"></i>
+                            <span class="ms-3">Analytics Chart Placeholder</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3 class="widget-title">Top Pages</h3>
+                        </div>
+                        <div class="page-list">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>/dashboard</span>
+                                <span class="badge bg-primary">1,234</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>/profile</span>
+                                <span class="badge bg-primary">987</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>/forms</span>
+                                <span class="badge bg-primary">654</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>/analytics</span>
+                                <span class="badge bg-primary">432</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>/settings</span>
+                                <span class="badge bg-primary">321</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="settings" class="page-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-container">
+                        <h3>Account Settings</h3>
+                        <form>
+                            <div class="form-group">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" value="johndoe">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Current Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">New Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Password</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-container">
+                        <h3>Preferences</h3>
+                        <div class="form-group">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                <label class="form-check-label" for="emailNotifications">
+                                    Email Notifications
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="pushNotifications">
+                                <label class="form-check-label" for="pushNotifications">
+                                    Push Notifications
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="darkMode" checked>
+                                <label class="form-check-label" for="darkMode">
+                                    Dark Mode
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Language</label>
+                            <select class="form-control">
+                                <option>English</option>
+                                <option>Spanish</option>
+                                <option>French</option>
+                                <option>German</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Timezone</label>
+                            <select class="form-control">
+                                <option>UTC-5 (Eastern Time)</option>
+                                <option>UTC-6 (Central Time)</option>
+                                <option>UTC-7 (Mountain Time)</option>
+                                <option>UTC-8 (Pacific Time)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Preferences</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-container mt-4">
+                <h3>Danger Zone</h3>
+                <div class="alert alert-danger" role="alert" style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger-color); color: var(--danger-color);">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    These actions cannot be undone. Please be careful.
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-outline-danger">Export Data</button>
+                    <button class="btn btn-outline-danger">Delete Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let sidebarVisible = true;
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebarVisible = !sidebarVisible;
+            
+            if (sidebarVisible) {
+                sidebar.classList.remove('hidden');
+                mainContent.classList.remove('expanded');
+            } else {
+                sidebar.classList.add('hidden');
+                mainContent.classList.add('expanded');
+            }
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.getElementById(pageId).classList.add('active');
+            event.target.closest('.nav-item').classList.add('active');
+            
+            document.getElementById(pageId).style.animation = 'fadeInUp 0.6s ease forwards';
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                const uploadArea = document.querySelector('.upload-area');
+                uploadArea.innerHTML = `
+                    <div class="upload-icon">
+                        <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                    </div>
+                    <h4>${files.length} file(s) selected</h4>
+                    <p class="text-muted">Ready to upload</p>
+                `;
+            }
+        });
+
+        document.querySelector('.upload-area').addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+
+        document.querySelector('.upload-area').addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+
+        document.querySelector('.upload-area').addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                this.innerHTML = `
+                    <div class="upload-icon">
+                        <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                    </div>
+                    <h4>${files.length} file(s) dropped</h4>
+                    <p class="text-muted">Ready to upload</p>
+                `;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            });
+
+            document.querySelectorAll('.slide-up, .fade-in').forEach(el => {
+                observer.observe(el);
+            });
+
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                    submitBtn.disabled = true;
+                    
+                    setTimeout(() => {
+                        submitBtn.innerHTML = '<i class="fas fa-check"></i> Success!';
+                        
+                        setTimeout(() => {
+                            submitBtn.innerHTML = originalText;
+                            submitBtn.disabled = false;
+                        }, 2000);
+                    }, 1500);
+                });
+            });
+
+            setInterval(() => {
+                const pulse = document.querySelector('.pulse');
+                if (pulse) {
+                    pulse.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        pulse.style.transform = 'scale(1)';
+                    }, 1000);
+                }
+            }, 3000);
+        });
+
+        if (window.innerWidth <= 768) {
+            sidebarVisible = false;
+            document.getElementById('sidebar').classList.add('hidden');
+            document.getElementById('mainContent').classList.add('expanded');
+        }
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth <= 768) {
+                sidebarVisible = false;
+                document.getElementById('sidebar').classList.add('hidden');
+                document.getElementById('mainContent').classList.add('expanded');
+            } else {
+                sidebarVisible = true;
+                document.getElementById('sidebar').classList.remove('hidden');
+                document.getElementById('mainContent').classList.remove('expanded');
+            }
+        });
+    </script>
+</body>
+</html>
